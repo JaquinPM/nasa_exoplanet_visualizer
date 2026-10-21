@@ -1,0 +1,6 @@
+.exoplanets-container {
+    height: 100%;       /* O un valor fijo como 100vh si el panel ocupa toda la pantalla vertical */
+    max-height: 100vh;
+    overflow-y: auto;   /* ¡Esto es lo que habilita el scroll interno! */
+    padding-right: 0.5rem; /* Opcional: espacio para que la barra de barra no estorbe */
+}

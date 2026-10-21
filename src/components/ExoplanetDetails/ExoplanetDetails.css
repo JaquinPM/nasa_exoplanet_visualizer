@@ -1,0 +1,177 @@
+.exoplanet-details {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 20;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 50vw;
+    height: 100vh;
+    height: 100dvh;
+
+    color: #e9ecef;
+    background: rgba(15, 17, 24, 0.94);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    overflow: hidden;
+}
+
+.exoplanet-details-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 28px 30px 22px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.exoplanet-eyebrow {
+    margin-bottom: 8px;
+
+    color: #8b95a7;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16rem;
+}
+
+.exoplanet-title {
+    margin: 0;
+
+    color: #f8f9fa;
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    font-weight: 500;
+}
+
+.exoplanet-subtitle {
+    margin-top: 7px;
+
+    color: #9299a8;
+    font-size: 0.8rem;
+}
+
+.exoplanet-close {
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    color: #aeb5c2;
+    font-size: 1.5rem;
+    line-height: 1;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.exoplanet-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.exoplanet-details-body {
+    flex: 1;
+    min-height: 0;
+
+    padding: 24px 30px;
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #414653 transparent;
+}
+
+.exoplanet-section {
+    margin-bottom: 30px;
+}
+
+.exoplanet-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 0 14px;
+
+    color: #b9c2d1;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.exoplanet-section-title i {
+    color: #8baeff;
+    font-size: 0.95rem;
+}
+
+.exoplanet-property {
+    height: 100%;
+    min-height: 72px;
+    padding: 13px 15px;
+
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 8px;
+
+    transition: background-color 0.2s ease;
+}
+
+.exoplanet-property:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.exoplanet-property-label {
+    margin-bottom: 8px;
+
+    color: #8992a2;
+    font-size: 0.75rem;
+}
+
+.exoplanet-property-value {
+    overflow-wrap: anywhere;
+
+    color: #f1f3f5;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.exoplanet-details-footer {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 13px 30px;
+
+    color: #747d8d;
+    font-size: 0.65rem;
+    letter-spacing: 0.08rem;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+    .exoplanet-details {
+        width: 100vw;
+    }
+
+    .exoplanet-details-header {
+        padding: 22px 20px 18px;
+    }
+
+    .exoplanet-details-body {
+        padding: 20px;
+    }
+
+    .exoplanet-details-footer {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .exoplanet-property {
+        transition: none;
+    }
+}

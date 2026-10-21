@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    padding: 0 !important; /* Fuerza a quitar cualquier padding heredado */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;      /* Evita el scroll global de la página */
+    background-color: #000; /* Fondo negro por defecto para el espacio */
+}
