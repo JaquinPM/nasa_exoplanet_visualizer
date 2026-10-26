@@ -51,7 +51,11 @@ export function AppContent() {
         setSelectedExoplanet={setSelectedExoplanet}
       />
       <CanvasContainer>
-        <Canvas camera={{ position: [30, 30, 30], fov: 60 }}>
+        <Canvas camera={{
+          position: [0, 50, 100],
+          near: 0.1,
+          far: 50000
+        }}>
           <color attach="background" args={["#000000"]} />
           <Stars
             radius={150}
@@ -70,13 +74,14 @@ export function AppContent() {
             onTransitionComplete={handleTransitionComplete}
           />
         </Canvas>
-      </CanvasContainer>
+      </CanvasContainer >
       {selectedExoplanet && !isTransitioning && (
         <ExoplanetDetails
           exoplanet={selectedExoplanet}
           onClose={() => setSelectedExoplanet(null)}
         />
-      )}
+      )
+      }
     </>
   );
 }

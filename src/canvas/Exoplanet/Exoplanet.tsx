@@ -6,41 +6,41 @@ import type { Exoplanet } from "../../model/Exoplanet";
 import { earthRadiiToScene } from "../../utils/units";
 
 interface Props {
-    exoplanet: Exoplanet;
-    setRef: (el: THREE.Mesh | null) => void;
+  exoplanet: Exoplanet;
+  setRef: (el: THREE.Mesh | null) => void;
 }
 
 type PlanetType = "rocky" | "gas" | "ice" | "unknown";
 
 function classifyPlanet(planet: Exoplanet): PlanetType {
-    const { radius, mass } = planet;
+  const { radius, mass } = planet;
 
-    if (
-        !Number.isFinite(radius) ||
-        radius <= 0 ||
-        mass == null ||
-        !Number.isFinite(mass) ||
-        mass <= 0
-    ) {
-        return "unknown";
-    }
-
-    // Supone radio y masa expresados en unidades terrestres.
-    const density = mass / Math.pow(radius, 3);
-
-    if (radius >= 6 || (radius >= 3 && density < 0.5)) {
-        return "gas";
-    }
-
-    if (radius < 3 && density < 0.7) {
-        return "ice";
-    }
-
-    if (radius < 2 && density >= 0.7) {
-        return "rocky";
-    }
-
+  if (
+    !Number.isFinite(radius) ||
+    radius <= 0 ||
+    mass == null ||
+    !Number.isFinite(mass) ||
+    mass <= 0
+  ) {
     return "unknown";
+  }
+
+  // Supone radio y masa expresados en unidades terrestres.
+  const density = mass / Math.pow(radius, 3);
+
+  if (radius >= 6 || (radius >= 3 && density < 0.5)) {
+    return "gas";
+  }
+
+  if (radius < 3 && density < 0.7) {
+    return "ice";
+  }
+
+  if (radius < 2 && density >= 0.7) {
+    return "rocky";
+  }
+
+  return "unknown";
 }
 
 const vertexShader = `
@@ -184,53 +184,54 @@ const fragmentShader = `
 `;
 
 export const ExoplanetModel = ({ exoplanet, setRef }: Props) => {
-    const calculatedRadius = earthRadiiToScene(exoplanet.radius);
-    const visualRadius = Math.max(calculatedRadius, 0.8);
+  const calculatedRadius = earthRadiiToScene(exoplanet.radius);
+  const visualRadius = Math.max(calculatedRadius, 0.8);
 
-    const planetRef = useRef<THREE.Mesh>(null);
-    const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const planetRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
 
-    const type = classifyPlanet(exoplanet);
+  const type = classifyPlanet(exoplanet);
 
-    const typeValue: Record<PlanetType, number> = {
-        rocky: 0,
-        gas: 1,
-        ice: 2,
-        unknown: 3,
-    };
+  const typeValue: Record<PlanetType, number> = {
+    rocky: 0,
+    gas: 1,
+    ice: 2,
+    unknown: 3,
+  };
 
-    useFrame((_, delta) => {
-        if (planetRef.current) {
-            planetRef.current.rotation.y += delta * 0.025;
-        }
+  useFrame((_, delta) => {
+    if (planetRef.current) {
+      planetRef.current.rotation.y += delta * 0.025;
+    }
 
-        if (materialRef.current) {
-            materialRef.current.uniforms.uTime.value += delta;
-        }
-    });
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value += delta;
+    }
+  });
 
-    return (
-        <mesh
-            ref={(el) => {
-                planetRef.current = el;
-                setRef(el);
-            }}
-        >
-            <sphereGeometry args={[visualRadius, 96, 96]} />
+  return (
+    <mesh
+      ref={(el) => {
+        planetRef.current = el;
+        setRef(el);
+      }}
+      frustumCulled={false}
+    >
+      <sphereGeometry args={[visualRadius, 96, 96]} />
 
-            <shaderMaterial
-                ref={materialRef}
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                uniforms={{
-                    uTime: { value: 0 },
-                    uSeed: { value: exoplanet.id * 0.137 },
-                    uType: { value: typeValue[type] },
-                    uLightDirection: {
-                        value: new THREE.Vector3(5, 3, 5).normalize(),
-                    },
-                }}
-            />
-        </mesh>
-    );
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={{
+          uTime: { value: 0 },
+          uSeed: { value: exoplanet.id * 0.137 },
+          uType: { value: typeValue[type] },
+          uLightDirection: {
+            value: new THREE.Vector3(5, 3, 5).normalize(),
+          },
+        }}
+      />
+    </mesh>
+  );
 };

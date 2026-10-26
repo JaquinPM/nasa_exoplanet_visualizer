@@ -1,7 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { PlanetarySystem } from "../PlanetarySystem/PlanetarySystem";
 import type { ExoplanetarySystem } from "../../model/ExoplanetarySystem";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 
 interface Props {
@@ -19,8 +18,8 @@ export const DetailedViewCanva = ({ planetarySystem, selectedExoplanetId }: Prop
         enablePan={true}
         enableZoom={true}
         minDistance={2}
-        maxDistance={500}
-        dampingFactor={0.05} // Movimiento suave de la cámara
+        maxDistance={10000}
+        dampingFactor={0.05}
         enableDamping={true}
       />
 
