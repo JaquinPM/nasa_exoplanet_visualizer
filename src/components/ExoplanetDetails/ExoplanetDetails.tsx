@@ -6,6 +6,9 @@ interface Props {
   onClose?: () => void;
 }
 
+/**
+ * Detailed exoplanet info to be shown when a card is selected
+ */
 export const ExoplanetDetails = ({ exoplanet, onClose }: Props) => {
   const formatValue = (value: number | string | null) => {
     if (value === null || value === "") return "—";
@@ -81,35 +84,17 @@ export const ExoplanetDetails = ({ exoplanet, onClose }: Props) => {
           value: exoplanet.discInstrument,
         },
       ],
-    },
-    {
-      title: "Identification",
-      icon: "bi-fingerprint",
-      properties: [
-        { label: "Exoplanet ID", value: exoplanet.id },
-        {
-          label: "Planetary system ID",
-          value: exoplanet.idExoplanetarySystem,
-        },
-      ],
-    },
+    }
   ];
 
   return (
     <aside className="exoplanet-details">
       <header className="exoplanet-details-header">
         <div className="min-w-0">
-          <div className="exoplanet-eyebrow">
-            EXOPLANET DATABASE
-          </div>
-
           <h2 className="exoplanet-title text-truncate">
             {exoplanet.name}
           </h2>
 
-          <div className="exoplanet-subtitle">
-            Planetary system #{exoplanet.idExoplanetarySystem}
-          </div>
         </div>
 
         {onClose && (

@@ -9,6 +9,11 @@ interface Props {
   onCardClick: (id: number) => void;
 }
 
+/**
+ * 
+ * Component that shows a list of card exoplanets
+ * @returns 
+ */
 export const ExoplanetsList = ({
   exoplanets,
   error,

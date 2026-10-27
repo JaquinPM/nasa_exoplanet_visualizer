@@ -10,101 +10,117 @@ import * as THREE from "three";
 const url = "http://localhost:8080/api/system";
 
 interface Props {
-    selectedSystemId: number;
-    isTransitioning: boolean;
-    onTransitionComplete: () => void;
+  // Used to decide to which system the camera should move if the aninmation starts
+  selectedSystemId: number;
+  // Used to decide if the animation towards a system is being reproduced ot not
+  isTransitioning: boolean;
+  //Function to ber executed whern the animation is finished
+  onTransitionComplete: () => void;
 }
 
+/**
+ *  Three.js component used to load the systems and show them in canvas 
+ */
 export const GlobalViewCanva = ({
-    selectedSystemId,
-    isTransitioning,
-    onTransitionComplete,
+  selectedSystemId,
+  isTransitioning,
+  onTransitionComplete,
 }: Props) => {
-    const systems = useFetch<ExoplanetarySystemSimp[]>(url, []);
-    const { camera, controls } = useThree();
+  // List of the systems
+  const systems = useFetch<ExoplanetarySystemSimp[]>(url, []);
 
-    const completedRef = useRef(false);
+  // Load camera and control
+  const { camera, controls } = useThree();
 
-    const targetSystem = systems.data.find(
-        (system) => system.id === selectedSystemId
-    );
+  // Variable to contolos whether the camera reached the final position or not while it si tranisitioning
+  const completedRef = useRef(false);
 
-    const targetPosition = targetSystem
-        ? new THREE.Vector3(
-              targetSystem.star.x ?? 0,
-              targetSystem.star.y ?? 0,
-              targetSystem.star.z ?? 0
-          )
-        : null;
+  // The system to be followed the camera is treansitionign
+  const targetSystem = systems.data.find(
+    (system) => system.id === selectedSystemId
+  );
 
-    useFrame((_, delta) => {
-        if (!isTransitioning || !targetPosition || completedRef.current) {
-            return;
-        }
+  // Position of the system used to be followed when transitioningf to details
+  const targetPosition = targetSystem
+    ? new THREE.Vector3(
+      targetSystem.star.x ?? 0,
+      targetSystem.star.y ?? 0,
+      targetSystem.star.z ?? 0
+    )
+    : null;
 
-        const orbitControls = controls as
-            | { target: THREE.Vector3; update: () => void }
-            | null;
 
-        if (!orbitControls) return;
-
-        // Posición final de la cámara, conservando la dirección
-        // desde la que se observa el sistema.
-        const direction = camera.position
-            .clone()
-            .sub(targetPosition)
-            .normalize();
-
-        const destination = targetPosition
-            .clone()
-            .add(direction.multiplyScalar(12));
-
-        const factor = 1 - Math.exp(-1.5 * Math.min(delta, 0.1));
-
-        camera.position.lerp(destination, factor);
-        orbitControls.target.lerp(targetPosition, factor);
-        orbitControls.update();
-
-        if (camera.position.distanceTo(destination) < 0.1) {
-            camera.position.copy(destination);
-            orbitControls.target.copy(targetPosition);
-            orbitControls.update();
-
-            completedRef.current = true;
-            onTransitionComplete();
-        }
-    });
-    const previousTransitionRef = useRef(false);
-    if (isTransitioning && !previousTransitionRef.current) {
-        completedRef.current = false;
+  /**
+   * Function  responsible to move the camera to the selected system when is transitioning
+   * */
+  useFrame((_, delta) => {
+    if (!isTransitioning || !targetPosition || completedRef.current) {
+      return;
     }
-    previousTransitionRef.current = isTransitioning;
 
-    return (
-        <>
-            <OrbitControls
-                makeDefault
-                enablePan={!isTransitioning}
-                enableZoom={!isTransitioning}
-                enableRotate={!isTransitioning}
-                minDistance={5}
-                maxDistance={200}
-            />
+    const orbitControls = controls as
+      | { target: THREE.Vector3; update: () => void }
+      | null;
 
-            {systems.data
-                .filter(
-                    (system) =>
-                        system.star.x != null &&
-                        system.star.y != null &&
-                        system.star.z != null
-                )
-                .map((system) => (
-                    <PlanetarySystemSimp
-                        system={system}
-                        onClick={() => console.log("Click", system.id)}
-                        key={system.id}
-                    />
-                ))}
-        </>
-    );
+    if (!orbitControls) return;
+    const direction = camera.position
+      .clone()
+      .sub(targetPosition)
+      .normalize();
+
+    const destination = targetPosition
+      .clone()
+      .add(direction.multiplyScalar(12));
+
+    const factor = 1 - Math.exp(-1.5 * Math.min(delta, 0.1));
+
+    camera.position.lerp(destination, factor);
+    orbitControls.target.lerp(targetPosition, factor);
+    orbitControls.update();
+
+    // When the distance between camera and system is enough, the the transition is finished
+    if (camera.position.distanceTo(destination) < 0.1) {
+      camera.position.copy(destination);
+      orbitControls.target.copy(targetPosition);
+      orbitControls.update();
+      completedRef.current = true;
+      onTransitionComplete();
+    }
+  });
+
+  const previousTransitionRef = useRef(false);
+  if (isTransitioning && !previousTransitionRef.current) {
+    completedRef.current = false;
+  }
+  previousTransitionRef.current = isTransitioning;
+
+
+  return (
+    <>
+      <OrbitControls
+        makeDefault
+        // Block the manual navigation when it is transitionign
+        enablePan={!isTransitioning}
+        enableZoom={!isTransitioning}
+        enableRotate={!isTransitioning}
+        minDistance={5}
+        maxDistance={200}
+      />
+
+      {systems.data
+        .filter(
+          (system) =>
+            system.star.x != null &&
+            system.star.y != null &&
+            system.star.z != null
+        )
+        .map((system) => (
+          <PlanetarySystemSimp
+            system={system}
+            onClick={() => console.log("Click", system.id)}
+            key={system.id}
+          />
+        ))}
+    </>
+  );
 };

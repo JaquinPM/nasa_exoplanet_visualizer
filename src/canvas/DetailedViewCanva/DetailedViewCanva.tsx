@@ -2,17 +2,16 @@ import { OrbitControls } from "@react-three/drei";
 import { PlanetarySystem } from "../PlanetarySystem/PlanetarySystem";
 import type { ExoplanetarySystem } from "../../model/ExoplanetarySystem";
 
-
 interface Props {
   planetarySystem: ExoplanetarySystem
   selectedExoplanetId: number
 }
 
-
 export const DetailedViewCanva = ({ planetarySystem, selectedExoplanetId }: Props) => {
   return (
     <>
 
+      {/* Camera controlos */}
       <OrbitControls
         makeDefault
         enablePan={true}

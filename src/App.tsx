@@ -2,7 +2,7 @@ import { AppContent } from './components/AppContent/AppContent';
 
 function App() {
   return (
-      <AppContent />
+    <AppContent />
 
   );
 }

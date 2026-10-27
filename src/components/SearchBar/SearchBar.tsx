@@ -4,6 +4,10 @@ interface Props {
   onSearch: (value: string) => void;
 }
 
+/**
+ * Search bar component
+ * @returns 
+ */
 export const SearchBar = ({ onSearch }: Props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -7,11 +7,15 @@ import { earthRadiiToScene } from "../../utils/units";
 
 interface Props {
   exoplanet: Exoplanet;
+  /**Callback function to expose the 3D node reference to the parent copmponent*/
   setRef: (el: THREE.Mesh | null) => void;
 }
 
 type PlanetType = "rocky" | "gas" | "ice" | "unknown";
 
+/**
+ *  Function that is used to classify the exoplanet based in its radius and mass
+ * */
 function classifyPlanet(planet: Exoplanet): PlanetType {
   const { radius, mass } = planet;
 
@@ -25,7 +29,6 @@ function classifyPlanet(planet: Exoplanet): PlanetType {
     return "unknown";
   }
 
-  // Supone radio y masa expresados en unidades terrestres.
   const density = mass / Math.pow(radius, 3);
 
   if (radius >= 6 || (radius >= 3 && density < 0.5)) {
@@ -183,9 +186,18 @@ const fragmentShader = `
     }
 `;
 
+/**
+ *  Three.js 3D mesh comnponent that is used to render an exoplanet within its shaders
+ *   
+ * @returns 
+ */
 export const ExoplanetModel = ({ exoplanet, setRef }: Props) => {
+
+  //Scales the real earth radius to scene radius
   const calculatedRadius = earthRadiiToScene(exoplanet.radius);
+
   const visualRadius = Math.max(calculatedRadius, 0.8);
+
 
   const planetRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -199,7 +211,9 @@ export const ExoplanetModel = ({ exoplanet, setRef }: Props) => {
     unknown: 3,
   };
 
+  /** Functtion executed each frame*/
   useFrame((_, delta) => {
+    // If there is already a ref, then the pĺanet is rotated 
     if (planetRef.current) {
       planetRef.current.rotation.y += delta * 0.025;
     }
@@ -215,10 +229,15 @@ export const ExoplanetModel = ({ exoplanet, setRef }: Props) => {
         planetRef.current = el;
         setRef(el);
       }}
+      //Rander always
       frustumCulled={false}
     >
+
+      {/* Sphere shape*/}
       <sphereGeometry args={[visualRadius, 96, 96]} />
 
+
+      {/* Shader */}
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}

@@ -8,6 +8,11 @@ interface Props {
   segments?: number; // How smooth the orbit circle is
 }
 
+/**
+ * 
+ * Three.js component that renders the whole exoplanet trayectory
+ * @returns 
+ */
 export const OrbitPath = ({ exoplanet, segments = 128 }: Props) => {
   // Generate points and build the Line object once per exoplanet/segments change
   const lineObject = useMemo(() => {

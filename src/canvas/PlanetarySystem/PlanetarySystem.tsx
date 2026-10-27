@@ -9,20 +9,30 @@ import { OrbitPath } from "../OrbitPath/OrbitPath";
 
 interface Props {
   planetarySystem: ExoplanetarySystem;
+  // Used to follow certain exoplanet position when it is selected
   selectedExoplanetId: number
 }
 
+/**
+ * Three.js component that renders the whole planetary system 
+ */
 export const PlanetarySystem = ({ planetarySystem, selectedExoplanetId }: Props) => {
+  // Mesh exoplanets list to update the exoplanets position based on their trayectories
   const planetRefs = useRef<(THREE.Mesh | null)[]>([]);
+
+  // How many days corresponds to each second of simulation
   const DAYS_PER_SECOND = 0.2;
 
+  // Elaśed time 
   const accumulatedTimeRef = useRef(0);
+
+  // Used to follow the exoplanet position when selected
   const currentLookTargetRef = useRef(new THREE.Vector3());
+
   const isFirstFrameRef = useRef(true);
 
-
-
-
+  // Function that moves the camera to a desired position, in this case will be used to 
+  // follow an exoplanet position 
   const updateCameraPosition = (
     camera: THREE.Camera,
     position: THREE.Vector3,
@@ -64,32 +74,48 @@ export const PlanetarySystem = ({ planetarySystem, selectedExoplanetId }: Props)
     camera.lookAt(currentLookTargetRef.current);
   };
 
+  // Function that updates each exoplanet position and moves rthe camera autromatically if needed
   useFrame(({ camera }, delta) => {
+    //Elapsed time betwwen frames
     const clampedDelta = Math.min(delta, 0.1);
+    // Real elapsedTime in days
     accumulatedTimeRef.current += clampedDelta * DAYS_PER_SECOND;
+    // Real elapsed time 
     const elapsedTime = accumulatedTimeRef.current;
 
+    // Position to be follwed is there is an exoplanet selected
     const selectedPosition = new THREE.Vector3();
+
     let followExoplanet = false;
 
+    // For each exoplanet in the system
     for (let i = 0; i < planetarySystem.exoplanets.length; i++) {
+      // Get the exoplanet mesh
       const mesh = planetRefs.current[i];
+
+      // If there is no mesh 
       if (!mesh) continue;
 
+      // Compute its orbit piosition based in the elapsedTime
       const position = calculateOrbitCoordinates(
         elapsedTime,
         planetarySystem.exoplanets[i]
       );
 
+      // Updaye mesh exoplanet position
       mesh.position.copy(position);
 
+      // I f the current exoplanet is the one to be followed by the camera
       if (selectedExoplanetId === planetarySystem.exoplanets[i].id) {
+        // Store its position 
         selectedPosition.copy(mesh.position);
         followExoplanet = true;
       }
     }
 
+    // If there is an exoplanet to be follwed
     if (followExoplanet) {
+      // Move the camera to it
       updateCameraPosition(camera, selectedPosition, clampedDelta);
     } else {
       isFirstFrameRef.current = true;
