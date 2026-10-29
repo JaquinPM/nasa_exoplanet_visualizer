@@ -1,0 +1,50 @@
+# dependencias de Bun y Node
+/node_modules
+/.pnp
+.pnp.js
+*.bun
+node_modules.bun
+
+# producción / compilación de React (Vite, CRA o Next.js)
+/dist
+/build
+/out
+/.next
+/.cache
+
+# pruebas y cobertura
+/coverage
+*.lcov
+
+# logs de errores y depuración
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# archivos de entorno y secretos (NUNCA subir a Git)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# configuración del sistema y editores
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# cachés de herramientas
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
