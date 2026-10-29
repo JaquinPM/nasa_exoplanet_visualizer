@@ -26,20 +26,19 @@ export const ExoplanetCard = ({ exoplanet, onCardClick }: Props) => {
 
           <ListGroup variant="flush" className="specs-list mb-4 flex-grow-1 bg-transparent">
             <ListGroup.Item className="px-0 py-2 bg-transparent text-white border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-              {/* Cambiado a text-light con mayor opacidad para que resalte más */}
-              <span className="text-light text-opacity-75 small fw-medium">Radio</span>
-              <span className="fw-semibold">{exoplanet.radius} R⊕</span>
+              <span className="text-light text-opacity-75 small fw-medium">Radius</span>
+              <span className="fw-semibold">{exoplanet.radius} Earth radius</span>
             </ListGroup.Item>
             <ListGroup.Item className="px-0 py-2 bg-transparent text-white border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-              <span className="text-light text-opacity-75 small fw-medium">Masa</span>
-              <span className="fw-semibold">{exoplanet.mass} M⊕</span>
+              <span className="text-light text-opacity-75 small fw-medium">Mass</span>
+              <span className="fw-semibold">{exoplanet.mass} Earth mass</span>
             </ListGroup.Item>
             <ListGroup.Item className="px-0 py-2 bg-transparent text-white border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-              <span className="text-light text-opacity-75 small fw-medium">Periodo Órbita</span>
-              <span className="fw-semibold">{exoplanet.orbitPeriod} días</span>
+              <span className="text-light text-opacity-75 small fw-medium">Orbit period</span>
+              <span className="fw-semibold">{exoplanet.orbitPeriod} Days</span>
             </ListGroup.Item>
             <ListGroup.Item className="px-0 py-2 bg-transparent text-white border-0 d-flex justify-content-between align-items-center">
-              <span className="text-light text-opacity-75 small fw-medium">Excentricidad</span>
+              <span className="text-light text-opacity-75 small fw-medium">Eccentricity</span>
               <span className="fw-semibold">{exoplanet.orbitEccentricity}</span>
             </ListGroup.Item>
           </ListGroup>
