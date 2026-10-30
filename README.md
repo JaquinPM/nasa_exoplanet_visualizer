@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/98ed6011-2844-4700-98f2-1336b59b1b02
 
 This project uses a custom REST API that retrieves raw astronomical data from NASA's Exoplanet Archive, processes it, and provides structured data for the frontend.
 
-**Backend repository:** [NASA Exoplanet API](YOUR_BACKEND_GITHUB_URL)
+**Backend repository:** [NASA Exoplanet API](https://github.com/JaquinPM/nasa_exoplanet_visualizer_api)
 
 ## Installation
 
