@@ -6,7 +6,7 @@ A 3D interactive application for exploring exoplanets and their planetary system
 
 Watch the application in action:
 
-[![NASA Exoplanet Visualizer Demo](./assets/demo.png)](./assets/demo.mp4)
+https://github.com/JaquinPM/nasa_exoplanet_visualizer/blob/development/assets/demo.mp4
 
 ## Features
 
